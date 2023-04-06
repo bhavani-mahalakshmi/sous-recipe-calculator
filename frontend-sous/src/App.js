@@ -51,6 +51,14 @@ function App() {
     setIngredients(newIngredients);
   };
 
+  const handlePurchaseChange = (index, key, event) => {
+    const newPurchasedIngredients = [...purchasedIngredients];
+    const ingredient = newPurchasedIngredients[index];
+    if (!ingredient) return; // Return if ingredient is undefined or null
+    ingredient[key] = event.target.value;
+    setPurchasedIngredients(newPurchasedIngredients);
+  };
+
   const calculateTotalCost = () => {
     let totalCost = 0;
     ingredients.forEach((ingredient, index) => {
@@ -95,8 +103,26 @@ function App() {
             {purchasedIngredients.map((ingredient, index) => (
               <tr key={index}>
                 <td>{ingredient.name}</td>
-                <td><input type="number" min="0" step="0.01" defaultValue={ingredient.amount} /></td>
-                <td><input type="number" min="0" step="0.01" defaultValue={ingredient.price} /></td>
+                <td>
+                    <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    defaultValue={ingredient.amount}
+                    onChange={(event) => handlePurchaseChange(index, "amount", event)}
+                    />
+                </td>
+                <td>
+                    <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    defaultValue={ingredient.price}
+                    onChange={(event) => handlePurchaseChange(index, "price", event)}
+                    />
+                </td>
+                <td>{ingredient.amount}</td>
+                <td>{ingredient.price}</td>
               </tr>
             ))}
           </tbody>
