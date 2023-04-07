@@ -15,8 +15,7 @@ def index():
 @app.route('/recipe', methods=['GET', 'POST'])
 def recipe():
     if request.method == 'GET':
-        id = request.args.get('id', default=0, type=int)
-        result = get_recipe(id)
+        result = get_recipe()
         return jsonify(isError = False,
                     message= "Success",
                     statusCode = 200,

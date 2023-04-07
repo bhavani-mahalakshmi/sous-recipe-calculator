@@ -20,6 +20,13 @@ function App() {
     setDoneShowButton(true);
   };
 
+  const disableInputs = () => {
+    const inputs = document.querySelectorAll('.ingredient input');
+    inputs.forEach((input) => {
+      input.setAttribute('disabled', true);
+    });
+  };
+
   const handleDone = () => {
     // Add ingredients to purchasedIngredients state
     const purchased = ingredients.map((ingredient) => ({
@@ -30,22 +37,15 @@ function App() {
     setPurchasedIngredients(purchased);
     setAddShowButton(true);
     setDoneShowButton(false);
-    const inputs = document.querySelectorAll('.ingredient input');
-    inputs.forEach((input) => {
-      input.setAttribute('disabled', true);
-    });
+    disableInputs();
   };
 
   useEffect(() => {
-    axios({
-      method: "GET",
-      url:"/recipe?id=1",
-    })
-    .then((response) => {
+    axios.get("/recipe?id=1").then((response) => {
       const res =response.data.data.recipe
       setTotalCost(res.cost)
       setRecipeName(res.name)
-      const ingredients = res.recipe_ingredients.map((ingredient) => ({
+      const ingredients = res.ingredients.map((ingredient) => ({
         name: ingredient.name,
         weight: ingredient.weight
       }));
@@ -55,7 +55,8 @@ function App() {
         amount: ingredient.purchase_amount,
         price: ingredient.purchase_price
       }));
-      setPurchasedIngredients(purchased)
+      setPurchasedIngredients(purchased);
+      disableInputs();
     }).catch((error) => {
       if (error.response) {
         console.log(error.response)
@@ -89,7 +90,7 @@ function App() {
     if (!ingredient) return; // Return if ingredient is undefined or null
     ingredient[key] = event.target.value;
     setPurchasedIngredients(newPurchasedIngredients);
-    // calculateTotalCost();
+    calculateTotalCost();
   };
 
   const calculateTotalCost = () => {
@@ -98,7 +99,9 @@ function App() {
       const costPerUnit = purchasedIngredients[index].price / purchasedIngredients[index].amount;
       totalCost += costPerUnit * ingredient.weight;
     });
-    setTotalCost(totalCost.toFixed(3));
+    if(!isNaN(parseFloat(totalCost)) && isFinite(totalCost) && totalCost >= 0){
+      setTotalCost(totalCost.toFixed(3));
+    }
     let ingredientsMap = []
     ingredients.map((ingredient, index) => {
       ingredientsMap.push({

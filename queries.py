@@ -11,50 +11,56 @@ engine = create_engine(f'postgresql://{user}:{password}@localhost:5432/{db}')
 Session = sessionmaker(bind=engine)
 session = Session()
 
-def get_recipe(recipe_id):
-    results = session.query(
-        Recipe.name,
-        Recipe.cost,
-        Ingredient.name,
-        Ingredient.purchase_price,
-        Ingredient.purchase_amount,
-        RecipeIngredient.weight
-    ).join(
-        RecipeIngredient,
-        Recipe.id == RecipeIngredient.recipe_id
-    ).join(
-        Ingredient,
-        Ingredient.id == RecipeIngredient.ingredient_id
-    ).filter(
-        Recipe.id == recipe_id
-    ).all()
-    ingredients = []
-    recipe_ingredients = []
-    for row in results:
-        ingredient = {
-            "name": row[2],
-            "purchase_price": row[3],
-            "purchase_amount": row[4]
+def get_recipe():
+    last_recipe = session.query(Recipe).order_by(Recipe.id.desc()).first()
+
+    if last_recipe:
+        results = session.query(
+            Recipe.name,
+            Recipe.cost,
+            Ingredient.name,
+            Ingredient.purchase_price,
+            Ingredient.purchase_amount,
+            RecipeIngredient.weight
+        ).join(
+            RecipeIngredient,
+            Recipe.id == RecipeIngredient.recipe_id
+        ).join(
+            Ingredient,
+            Ingredient.id == RecipeIngredient.ingredient_id
+        ).filter(
+            Recipe.id == last_recipe.id
+        ).all()
+        ingredients = []
+        for row in results:
+            ingredient = {
+                "name": row[2],
+                "purchase_price": row[3],
+                "purchase_amount": row[4],
+                "weight": row[5]
+            }
+            ingredients.append(ingredient)
+        recipe_name = results[0][0]
+        recipe_cost = results[0][1]
+        output = {
+            "recipe": {
+                "name": recipe_name,
+                "cost": recipe_cost,
+                "ingredients": ingredients
+            },
         }
-        ingredients.append(ingredient)
-        recipe_ingredient = {
-            "name": row[2],
-            "weight": row[5]
-        }
-        recipe_ingredients.append(recipe_ingredient)
-    recipe_name = results[0][0]
-    recipe_cost = results[0][1]
-    output = {
-        "recipe": {
-            "name": recipe_name,
-            "cost": recipe_cost,
-            "ingredients": ingredients,
-            "recipe_ingredients": recipe_ingredients
-        },
-    }
+    else:
+        output = None
     return output
 
+def truncate_tables():
+    session.query(RecipeIngredient).delete()
+    session.query(Recipe).delete()
+    session.query(Ingredient).delete()
+    session.commit()
+
 def insert_recipe(input):
+    truncate_tables()
     recipe = Recipe(name=input['name'], cost=input['cost'])
     session.add(recipe)
     session.commit()
