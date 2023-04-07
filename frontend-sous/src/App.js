@@ -7,8 +7,10 @@ function App() {
   const [ingredients, setIngredients] = useState([]);
   const [showAddButton, setAddShowButton] = useState(true);
   const [showDoneButton, setDoneShowButton] = useState(false);
+  const [enableCalculateButton, setEnableCalculateButton] = useState(false);
   const [purchasedIngredients, setPurchasedIngredients] = useState([]);
   const [totalCost, setTotalCost] = useState(0.0);
+  const [latestIngredient, setLatestIngredient] = useState({ name: '', weight: ''});
   
   const handleRecipeNameChange = (e) => {
     setRecipeName(e.target.value);
@@ -28,12 +30,9 @@ function App() {
 
   const handleDone = () => {
     // Add ingredients to purchasedIngredients state
-    const purchased = ingredients.map((ingredient) => ({
-        name: ingredient.name,
-        amount: 0,
-        price: 0
-      }));
-    setPurchasedIngredients(purchased);
+    const newPurchasedIngredients = [...purchasedIngredients];
+    newPurchasedIngredients.push({ name: latestIngredient.name, amount: 0, price: 0 });
+    setPurchasedIngredients(newPurchasedIngredients);
     setAddShowButton(true);
     setDoneShowButton(false);
     disableInputs();
@@ -72,6 +71,9 @@ function App() {
     const newPurchasedIngredients = [...purchasedIngredients];
     newPurchasedIngredients.splice(index, 1);
     setPurchasedIngredients(newPurchasedIngredients);
+    if(newIngredients.length === 0) {
+      setTotalCost(0.0);
+    }
     calculateTotalCost();
   };
 
@@ -85,11 +87,21 @@ function App() {
         }
   };    
 
+  const toggleCalculateButton = (ingredient) => {
+      const allInputsFilled = Object.values(ingredient).every(val => val !== '');
+      if (allInputsFilled) {
+        setEnableCalculateButton(true);
+      } else {
+        setEnableCalculateButton(false);
+      }
+  };
+
   const handleIngredientChange = (index, key, value) => {
     const newIngredients = [...ingredients];
     const ingredient = newIngredients[index];
     if (!ingredient) return; // Return if ingredient is undefined or null
     ingredient[key] = value;
+    setLatestIngredient(ingredient);
     setIngredients(newIngredients);
     toggleDoneButton(ingredient);
   };
@@ -100,17 +112,20 @@ function App() {
     if (!ingredient) return; // Return if ingredient is undefined or null
     ingredient[key] = event.target.value;
     setPurchasedIngredients(newPurchasedIngredients);
-    calculateTotalCost();
+    toggleCalculateButton(ingredient);
+    // calculateTotalCost();
   };
 
   const calculateTotalCost = () => {
     let totalCost = 0;
-    ingredients.forEach((ingredient, index) => {
-      const costPerUnit = purchasedIngredients[index].price / purchasedIngredients[index].amount;
-      totalCost += costPerUnit * ingredient.weight;
+    purchasedIngredients.forEach((ingredient, index) => {
+      const costPerUnit = ingredient.price / ingredient.amount;
+      totalCost += costPerUnit * ingredients[index].weight;
     });
     if(!isNaN(parseFloat(totalCost)) && isFinite(totalCost) && totalCost >= 0){
       setTotalCost(totalCost.toFixed(3));
+    } else {
+      setTotalCost(0.0);
     }
     let ingredientsMap = []
     ingredients.map((ingredient, index) => {
@@ -128,13 +143,13 @@ function App() {
           "ingredients": ingredientsMap
       }
   }
-    axios.post('/recipe', body)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    // axios.post('/recipe', body)
+    // .then(function (response) {
+    //   console.log(response);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
   };
 
   return (
@@ -188,7 +203,7 @@ function App() {
                         type="number"
                         min="0"
                         step="0.01"
-                        defaultValue={ingredient.price}
+                        placeholder="Purchase Price"
                         onChange={(event) => handlePurchaseChange(index, "price", event)}
                         />
                     </td>
@@ -198,7 +213,7 @@ function App() {
                         type="number"
                         min="0"
                         step="0.01"
-                        defaultValue={ingredient.amount}
+                        placeholder="Purchase Amount"
                         onChange={(event) => handlePurchaseChange(index, "amount", event)}
                         />
                         <strong>oz</strong>
@@ -215,7 +230,9 @@ function App() {
                           <label>Total Cost:</label>
                           <span>{totalCost}</span>
                       </td>
-                      <td><button onClick={calculateTotalCost}>Calculate</button></td>
+                      <td>
+                        <button onClick={calculateTotalCost} disabled={!enableCalculateButton}>Calculate</button>
+                      </td>
                     </tr>
                     </tbody>
               </table>
