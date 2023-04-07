@@ -33,6 +33,7 @@ code {
   flex: 1;
   padding: 10px;
   height: 100%;
+  width: 100%;
 }
 
 input {
@@ -77,7 +78,7 @@ button:hover {
 }
 
 .ingredients-container, .cost-container {
-  width: 50%;
+  width: 60%;
   padding: 20px;
   height: 100%;
 }
@@ -141,13 +142,13 @@ table {
 }
 
 th {
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   text-align: center;
   padding: 8px;
 }
 
 td {
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   text-align: left;
   padding: 8px;
 }

@@ -111,9 +111,9 @@ function App() {
             <thead>
                 <tr>
                 <th>Ingredient</th>
-                <th>Purchase Amount</th>
-                <th></th>
                 <th>Purchase Price</th>
+                <th></th>
+                <th>Purchase Amount</th>
                 </tr>
             </thead>
             <tbody>
@@ -126,8 +126,8 @@ function App() {
                         type="number"
                         min="0"
                         step="0.01"
-                        defaultValue={ingredient.amount}
-                        onChange={(event) => handlePurchaseChange(index, "amount", event)}
+                        defaultValue={ingredient.price}
+                        onChange={(event) => handlePurchaseChange(index, "price", event)}
                         />
                     </td>
                     <td><strong>per</strong></td>
@@ -136,8 +136,8 @@ function App() {
                         type="number"
                         min="0"
                         step="0.01"
-                        defaultValue={ingredient.price}
-                        onChange={(event) => handlePurchaseChange(index, "price", event)}
+                        defaultValue={ingredient.amount}
+                        onChange={(event) => handlePurchaseChange(index, "amount", event)}
                         />
                         <strong>oz</strong>
                     </td>
