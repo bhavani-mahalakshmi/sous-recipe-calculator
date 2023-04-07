@@ -124,6 +124,7 @@ button {
   width: 100%;
   margin: 0%;
   padding: 0%;
+  overflow: auto;
 }
 
 .total-cost label {
@@ -162,6 +163,21 @@ th {
   color: white;
 }
 
+@media only screen and (max-width: 600px) {
+  /* styles for screens with a maximum width of 600px */
+  body {
+    font-size: 16px;
+  }
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .box {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
 /* Mobile layout */
 @media (max-width: 767px) {
   .recipe-container {
@@ -180,6 +196,49 @@ th {
   .ingredients-container, .cost-container {
     width: 100%;
     margin: 10px 0;
+  }
+}
+
+/* Media queries */
+@media only screen and (max-width: 768px) {
+  /* Adjust recipe container to stack items vertically */
+  .recipe-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  /* Adjust ingredient and cost containers to take up full width and height */
+  .ingredients-container, .cost-container {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+  }
+
+  /* Adjust ingredient and cost tables to be full width */
+  table {
+    width: 100%;
+  }
+  
+  /* Adjust button and input styles */
+  button, input[type="number"], input[type="text"] {
+    width: 100%;
+    margin: 10px 0;
+  }
+}
+
+/* Styles for tablets */
+@media only screen and (max-width: 992px) {
+  .container {
+    max-width: 768px;
+    margin: 0 auto;
+  }
+}
+
+/* Styles for mobile devices */
+@media only screen and (max-width: 576px) {
+  .container {
+    max-width: 100%;
+    margin: 0;
   }
 }
 

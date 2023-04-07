@@ -107,7 +107,7 @@ function App() {
             </div>
         </div>
         <div className="cost-container">
-            <table>
+            <table className='cost-table'>
             <thead>
                 <tr>
                 <th>Ingredient</th>
