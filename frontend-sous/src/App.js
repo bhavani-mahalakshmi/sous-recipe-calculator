@@ -11,7 +11,8 @@ function App() {
   const [purchasedIngredients, setPurchasedIngredients] = useState([]);
   const [totalCost, setTotalCost] = useState(0.0);
   const [latestIngredient, setLatestIngredient] = useState({ name: '', weight: ''});
-  
+  const [calcCalled, setCalcCalled] = useState(false);
+
   const handleRecipeNameChange = (e) => {
     setRecipeName(e.target.value);
   };
@@ -86,6 +87,7 @@ function App() {
     calculateTotalCost();
     setAddShowButton(true);
     setDoneShowButton(false);
+    setEnableCalculateButton(true);
   };
 
   const toggleDoneButton = (ingredient) => {
@@ -153,38 +155,46 @@ function App() {
   };
 
   const save = () => {
-    let ingredientsMap = []
-    ingredients.map((ingredient, index) => {
-      ingredientsMap.push({
-        name: ingredient.name,
-        purchase_price: purchasedIngredients[index].price,
-        purchase_amount: purchasedIngredients[index].amount,
-        weight: ingredient.weight
+    if (calcCalled) {
+      let ingredientsMap = []
+      ingredients.map((ingredient, index) => {
+        ingredientsMap.push({
+          name: ingredient.name,
+          purchase_price: purchasedIngredients[index].price,
+          purchase_amount: purchasedIngredients[index].amount,
+          weight: ingredient.weight
+        })
       })
-    })
-    let body = {
-      "recipe": {
-          "name": recipeName,
-          "cost": totalCost,
-          "ingredients": ingredientsMap
-      }
+      let body = {
+        "recipe": {
+            "name": recipeName,
+            "cost": parseFloat(totalCost).toFixed(3),
+            "ingredients": ingredientsMap
+        }
+    }
+      axios.post('/recipe', body)
+      .then(function (response) {
+        console.log(response);
+        alert("Recipe saved successfully!");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+      setCalcCalled(false);
+    }
   }
-    axios.post('/recipe', body)
-    .then(function (response) {
-      console.log(response);
-      alert("Recipe saved successfully!");
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
+  useEffect(() => {
+    // Run the save function whenever totalCost changes
+    save();
+  }, [totalCost]);
 
   const handleCalculate = () => {
     if (recipeName === '') {
       alert('Please enter a recipe name');
       return;
     }
-    calculateTotalCost();
+    calculateTotalCost(true);
+    setCalcCalled(true);
     save();
   };
 

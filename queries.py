@@ -60,24 +60,27 @@ def truncate_tables():
     session.commit()
 
 def insert_recipe(input):
-    truncate_tables()
-    recipe = Recipe(name=input['name'], cost=input['cost'])
-    session.add(recipe)
-    session.commit()
-    recipe_id = recipe.id
-    for ingredient in input['ingredients']:
-        ingredient_entry = Ingredient(
-            name=ingredient['name'],
-            purchase_price=ingredient['purchase_price'],
-            purchase_amount=ingredient['purchase_amount']
-        )
-        session.add(ingredient_entry)
+    try:
+        truncate_tables()
+        recipe = Recipe(name=input['name'], cost=input['cost'])
+        session.add(recipe)
         session.commit()
-        ingredient_id = ingredient_entry.id
-        recipe_ingredient = RecipeIngredient(
-            recipe_id=recipe_id,
-            ingredient_id=ingredient_id,
-            weight=ingredient['weight']
-        )
-        session.add(recipe_ingredient)
-        session.commit()
+        recipe_id = recipe.id
+        for ingredient in input['ingredients']:
+            ingredient_entry = Ingredient(
+                name=ingredient['name'],
+                purchase_price=ingredient['purchase_price'],
+                purchase_amount=ingredient['purchase_amount']
+            )
+            session.add(ingredient_entry)
+            session.commit()
+            ingredient_id = ingredient_entry.id
+            recipe_ingredient = RecipeIngredient(
+                recipe_id=recipe_id,
+                ingredient_id=ingredient_id,
+                weight=ingredient['weight']
+            )
+            session.add(recipe_ingredient)
+            session.commit()
+    except:
+        session.rollback()
