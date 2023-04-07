@@ -31,10 +31,11 @@ function App() {
   const handleDone = () => {
     // Add ingredients to purchasedIngredients state
     const newPurchasedIngredients = [...purchasedIngredients];
-    newPurchasedIngredients.push({ name: latestIngredient.name, amount: 0, price: 0 });
+    newPurchasedIngredients.push({ name: latestIngredient.name, amount: '', price: '' });
     setPurchasedIngredients(newPurchasedIngredients);
     setAddShowButton(true);
     setDoneShowButton(false);
+    setEnableCalculateButton(false);
     disableInputs();
   };
 
@@ -89,9 +90,21 @@ function App() {
         }
   };    
 
-  const toggleCalculateButton = (ingredient) => {
-      const allInputsFilled = Object.values(ingredient).every(val => val !== '');
-      if (allInputsFilled) {
+  function checkInputsNotEmpty(className) {
+    const inputs = document.querySelectorAll(`.${className} input`);
+    let allFilled = true;
+  
+    for (let i = 0; i < inputs.length; i++) {
+      if (!inputs[i].value) {
+        allFilled = false;
+        break;
+      }
+    }
+    return allFilled;
+  }
+
+  const toggleCalculateButton = () => {
+      if (checkInputsNotEmpty('cost-table')) {
         setEnableCalculateButton(true);
       } else {
         setEnableCalculateButton(false);
@@ -114,7 +127,7 @@ function App() {
     if (!ingredient) return; // Return if ingredient is undefined or null
     ingredient[key] = event.target.value;
     setPurchasedIngredients(newPurchasedIngredients);
-    toggleCalculateButton(ingredient);
+    toggleCalculateButton();
     // calculateTotalCost();
   };
 
