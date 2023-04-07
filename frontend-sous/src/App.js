@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from 'react';
 import Ingredient from './Ingredient';
 
@@ -14,7 +15,7 @@ function App() {
   };
 
   const handleAddIngredient = () => {
-    setIngredients([...ingredients, { name: '', weight: '', amount: '', price: '' }]);
+    setIngredients([...ingredients, { name: '', weight: ''}]);
     setAddShowButton(false);
     setDoneShowButton(true);
   };
@@ -24,7 +25,7 @@ function App() {
     const purchased = ingredients.map((ingredient) => ({
         name: ingredient.name,
         amount: 0,
-        price: 0,
+        price: 0
       }));
     setPurchasedIngredients(purchased);
     setAddShowButton(true);
@@ -36,8 +37,33 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(totalCost);
-  }, [totalCost]);
+    axios({
+      method: "GET",
+      url:"/recipe?id=1",
+    })
+    .then((response) => {
+      const res =response.data.data.recipe
+      setTotalCost(res.cost)
+      setRecipeName(res.name)
+      const ingredients = res.recipe_ingredients.map((ingredient) => ({
+        name: ingredient.name,
+        weight: ingredient.weight
+      }));
+      setIngredients(ingredients)
+      const purchased = res.ingredients.map((ingredient) => ({
+        name: ingredient.name,
+        amount: ingredient.purchase_amount,
+        price: ingredient.purchase_price
+      }));
+      setPurchasedIngredients(purchased)
+    }).catch((error) => {
+      if (error.response) {
+        console.log(error.response)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+        }
+    })
+  }, []);
 
   const handleDeleteIngredient = (index) => {
     const newIngredients = [...ingredients];
@@ -73,6 +99,29 @@ function App() {
       totalCost += costPerUnit * ingredient.weight;
     });
     setTotalCost(totalCost.toFixed(3));
+    let ingredientsMap = []
+    ingredients.map((ingredient, index) => {
+      ingredientsMap.push({
+        name: ingredient.name,
+        purchase_price: purchasedIngredients[index].price,
+        purchase_amount: purchasedIngredients[index].amount,
+        weight: ingredient.weight
+      })
+    })
+    let body = {
+      "recipe": {
+          "name": recipeName,
+          "cost": totalCost.toFixed(3),
+          "ingredients": ingredientsMap
+      }
+  }
+    axios.post('/recipe', body)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   };
 
   return (
@@ -148,13 +197,15 @@ function App() {
                 <div className="total-cost">
                     <table className='total-cost-table'>
                     <tbody>
-                    <td>
-                        <label>Total Cost:</label>
-                        <span>{totalCost}</span>
-                    </td>
-                    <td><button onClick={calculateTotalCost}>Calculate</button></td>
+                    <tr>
+                      <td>
+                          <label>Total Cost:</label>
+                          <span>{totalCost}</span>
+                      </td>
+                      <td><button onClick={calculateTotalCost}>Calculate</button></td>
+                    </tr>
                     </tbody>
-                    </table>
+              </table>
                 </div>
         </div>
         </div>
