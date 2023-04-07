@@ -45,18 +45,18 @@ function App() {
   };
 
   useEffect(() => {
-    axios.get("/recipe?id=1").then((response) => {
+    axios.get("/recipe").then((response) => {
       const res =response.data.data
       if(res) {
-        res = res.recipe
-        setTotalCost(res.cost)
-        setRecipeName(res.name)
-        const ingredients = res.ingredients.map((ingredient) => ({
+        let recipe = res.recipe
+        setTotalCost(recipe.cost)
+        setRecipeName(recipe.name)
+        const ingredients = recipe.ingredients.map((ingredient) => ({
           name: ingredient.name,
           weight: ingredient.weight
         }));
         setIngredients(ingredients)
-        const purchased = res.ingredients.map((ingredient) => ({
+        const purchased = recipe.ingredients.map((ingredient) => ({
           name: ingredient.name,
           amount: ingredient.purchase_amount,
           price: ingredient.purchase_price
@@ -165,13 +165,14 @@ function App() {
     let body = {
       "recipe": {
           "name": recipeName,
-          "cost": totalCost.toFixed(3),
+          "cost": totalCost,
           "ingredients": ingredientsMap
       }
   }
     axios.post('/recipe', body)
     .then(function (response) {
       console.log(response);
+      alert("Recipe saved successfully!");
     })
     .catch(function (error) {
       console.log(error);
@@ -184,7 +185,7 @@ function App() {
       return;
     }
     calculateTotalCost();
-    // save();
+    save();
   };
 
   return (
@@ -238,6 +239,7 @@ function App() {
                         type="number"
                         min="0"
                         step="0.01"
+                        defaultValue={ingredient.price}
                         placeholder="Purchase Price"
                         onChange={(event) => handlePurchaseChange(index, "price", event)}
                         />
@@ -248,6 +250,7 @@ function App() {
                         type="number"
                         min="0"
                         step="0.01"
+                        defaultValue={ingredient.amount}
                         placeholder="Purchase Amount"
                         onChange={(event) => handlePurchaseChange(index, "amount", event)}
                         />
