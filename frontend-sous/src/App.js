@@ -17,7 +17,6 @@ function App() {
   const handleAddIngredient = () => {
     setIngredients([...ingredients, { name: '', weight: ''}]);
     setAddShowButton(false);
-    setDoneShowButton(true);
   };
 
   const disableInputs = () => {
@@ -76,12 +75,23 @@ function App() {
     calculateTotalCost();
   };
 
+  const toggleDoneButton = (ingredient) => {
+        // enable Done button on all filled inputs
+        const allInputsFilled = Object.values(ingredient).every(val => val !== '');
+        if (allInputsFilled) {
+          setDoneShowButton(true);
+        } else {
+          setDoneShowButton(false);
+        }
+  };    
+
   const handleIngredientChange = (index, key, value) => {
     const newIngredients = [...ingredients];
     const ingredient = newIngredients[index];
     if (!ingredient) return; // Return if ingredient is undefined or null
     ingredient[key] = value;
     setIngredients(newIngredients);
+    toggleDoneButton(ingredient);
   };
 
   const handlePurchaseChange = (index, key, event) => {
