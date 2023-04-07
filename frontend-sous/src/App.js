@@ -23,9 +23,9 @@ function App() {
 
   const disableInputs = () => {
     const inputs = document.querySelectorAll('.ingredient input');
-    inputs.forEach((input) => {
-      input.setAttribute('disabled', true);
-    });
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].setAttribute('disabled', true);
+    }
   };
 
   const handleDone = () => {
@@ -75,6 +75,8 @@ function App() {
       setTotalCost(0.0);
     }
     calculateTotalCost();
+    setAddShowButton(true);
+    setDoneShowButton(false);
   };
 
   const toggleDoneButton = (ingredient) => {
@@ -127,6 +129,9 @@ function App() {
     } else {
       setTotalCost(0.0);
     }
+  };
+
+  const save = () => {
     let ingredientsMap = []
     ingredients.map((ingredient, index) => {
       ingredientsMap.push({
@@ -143,13 +148,18 @@ function App() {
           "ingredients": ingredientsMap
       }
   }
-    // axios.post('/recipe', body)
-    // .then(function (response) {
-    //   console.log(response);
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
+    axios.post('/recipe', body)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  const handleCalculate = () => {
+    calculateTotalCost();
+    // save();
   };
 
   return (
@@ -231,7 +241,7 @@ function App() {
                           <span>{totalCost}</span>
                       </td>
                       <td>
-                        <button onClick={calculateTotalCost} disabled={!enableCalculateButton}>Calculate</button>
+                        <button onClick={handleCalculate} disabled={!enableCalculateButton}>Calculate</button>
                       </td>
                     </tr>
                     </tbody>
