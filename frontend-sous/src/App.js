@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Ingredient from './Ingredient';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
   const [showDoneButton, setDoneShowButton] = useState(false);
   const [purchasedIngredients, setPurchasedIngredients] = useState([]);
   const [totalCost, setTotalCost] = useState(0.0);
-
+  
   const handleRecipeNameChange = (e) => {
     setRecipeName(e.target.value);
   };
@@ -35,12 +35,18 @@ function App() {
     });
   };
 
+  useEffect(() => {
+    console.log(totalCost);
+  }, [totalCost]);
+
   const handleDeleteIngredient = (index) => {
     const newIngredients = [...ingredients];
     newIngredients.splice(index, 1);
-    purchasedIngredients.splice(index, 1);
     setIngredients(newIngredients);
-    setPurchasedIngredients(purchasedIngredients);
+    const newPurchasedIngredients = [...purchasedIngredients];
+    newPurchasedIngredients.splice(index, 1);
+    setPurchasedIngredients(newPurchasedIngredients);
+    calculateTotalCost();
   };
 
   const handleIngredientChange = (index, key, value) => {
@@ -57,6 +63,7 @@ function App() {
     if (!ingredient) return; // Return if ingredient is undefined or null
     ingredient[key] = event.target.value;
     setPurchasedIngredients(newPurchasedIngredients);
+    // calculateTotalCost();
   };
 
   const calculateTotalCost = () => {
@@ -69,65 +76,73 @@ function App() {
   };
 
   return (
-    <div className="recipe-container">
-      <div className="ingredients-container">
-        <h2>Ingredients</h2>
-        <label htmlFor="recipe-name">Recipe Name:</label>
-        <input type="text" id="recipe-name" value={recipeName} onChange={handleRecipeNameChange} />
-        {ingredients.map((ingredient, index) => (
-          <Ingredient key={index} index={index} ingredient={ingredient} onDelete={handleDeleteIngredient} onChange={handleIngredientChange} />
-        ))}
-        {showAddButton && (
-          <button onClick={handleAddIngredient}>Add Ingredient</button>
-        )}       
-        {showDoneButton && (
-          <button onClick={handleDone}>Done</button>
-        )}
-      </div>
-      <div className="cost-container">
-        <h2>Cost</h2>
-        <div className="total-cost">
-          <label>Total Cost:</label>
-          <span>{totalCost}</span>
+    <div>
+        <div className='recipe-name-container'>
+            <label htmlFor="recipe-name">Recipe Name:</label>
+            <input type="text" id="recipe-name" value={recipeName} onChange={handleRecipeNameChange} />
         </div>
-        <button onClick={calculateTotalCost}>Calculate</button>
-        <table>
-          <thead>
-            <tr>
-              <th>Ingredient</th>
-              <th>Purchase Amount</th>
-              <th>Purchase Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {purchasedIngredients.map((ingredient, index) => (
-              <tr key={index}>
-                <td>{ingredient.name}</td>
-                <td>
-                    <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    defaultValue={ingredient.amount}
-                    onChange={(event) => handlePurchaseChange(index, "amount", event)}
-                    />
-                </td>
-                <td>
-                    <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    defaultValue={ingredient.price}
-                    onChange={(event) => handlePurchaseChange(index, "price", event)}
-                    />
-                </td>
-                <td>{ingredient.amount}</td>
-                <td>{ingredient.price}</td>
-              </tr>
+        <div className="recipe-container">
+        <div className="ingredients-container">
+            <table>
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    </tr>
+                </thead>
+            </table>
+            {ingredients.map((ingredient, index) => (
+            <Ingredient key={index} index={index} ingredient={ingredient} onDelete={handleDeleteIngredient} onChange={handleIngredientChange} />
             ))}
-          </tbody>
-        </table>
-      </div>
+            {showAddButton && (
+            <button className="add-ingredient" onClick={handleAddIngredient}>Add Ingredient</button>
+            )}       
+            {showDoneButton && (
+            <button onClick={handleDone}>Done</button>
+            )}
+        </div>
+        <div className="cost-container">
+            <table>
+            <thead>
+                <tr>
+                <th>Ingredient</th>
+                <th>Purchase Amount</th>
+                <th>Purchase Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {purchasedIngredients.map((ingredient, index) => (
+                <tr key={index}>
+                    <td>{ingredient.name}</td>
+                    <td>
+                        <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        defaultValue={ingredient.amount}
+                        onChange={(event) => handlePurchaseChange(index, "amount", event)}
+                        />
+                    </td>
+                    <td>
+                        <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        defaultValue={ingredient.price}
+                        onChange={(event) => handlePurchaseChange(index, "price", event)}
+                        />
+                    </td>
+                </tr>
+                ))}
+            </tbody>
+            </table>
+            <div className="total-cost">
+            <label>Total Cost:</label>
+            <span>{totalCost}</span>
+            </div>
+            <button onClick={calculateTotalCost}>Calculate</button>
+        </div>
+        </div>
     </div>
   );
 }
