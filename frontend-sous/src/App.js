@@ -112,6 +112,7 @@ function App() {
                 <tr>
                 <th>Ingredient</th>
                 <th>Purchase Amount</th>
+                <th></th>
                 <th>Purchase Price</th>
                 </tr>
             </thead>
@@ -119,7 +120,8 @@ function App() {
                 {purchasedIngredients.map((ingredient, index) => (
                 <tr key={index}>
                     <td>{ingredient.name}</td>
-                    <td>
+                    <td className="cost-row">
+                        <strong>$</strong>
                         <input
                         type="number"
                         min="0"
@@ -128,7 +130,8 @@ function App() {
                         onChange={(event) => handlePurchaseChange(index, "amount", event)}
                         />
                     </td>
-                    <td>
+                    <td><strong>per</strong></td>
+                    <td className="cost-row">
                         <input
                         type="number"
                         min="0"
@@ -136,6 +139,7 @@ function App() {
                         defaultValue={ingredient.price}
                         onChange={(event) => handlePurchaseChange(index, "price", event)}
                         />
+                        <strong>oz</strong>
                     </td>
                 </tr>
                 ))}

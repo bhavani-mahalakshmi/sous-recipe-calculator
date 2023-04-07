@@ -140,8 +140,14 @@ table {
   width: 100%;
 }
 
-th, td {
-  /* border: 1px solid #ddd; */
+th {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 8px;
+}
+
+td {
+  border: 1px solid #ddd;
   text-align: left;
   padding: 8px;
 }
@@ -209,4 +215,9 @@ th {
 .total-cost-table td {
   border: 0;
   text-align: center;
+}
+
+.weight, .cost-row {
+  display: flex;
+  align-items: center;
 }
