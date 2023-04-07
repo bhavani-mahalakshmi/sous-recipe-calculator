@@ -46,21 +46,24 @@ function App() {
 
   useEffect(() => {
     axios.get("/recipe?id=1").then((response) => {
-      const res =response.data.data.recipe
-      setTotalCost(res.cost)
-      setRecipeName(res.name)
-      const ingredients = res.ingredients.map((ingredient) => ({
-        name: ingredient.name,
-        weight: ingredient.weight
-      }));
-      setIngredients(ingredients)
-      const purchased = res.ingredients.map((ingredient) => ({
-        name: ingredient.name,
-        amount: ingredient.purchase_amount,
-        price: ingredient.purchase_price
-      }));
-      setPurchasedIngredients(purchased);
-      disableInputs();
+      const res =response.data.data
+      if(res) {
+        res = res.recipe
+        setTotalCost(res.cost)
+        setRecipeName(res.name)
+        const ingredients = res.ingredients.map((ingredient) => ({
+          name: ingredient.name,
+          weight: ingredient.weight
+        }));
+        setIngredients(ingredients)
+        const purchased = res.ingredients.map((ingredient) => ({
+          name: ingredient.name,
+          amount: ingredient.purchase_amount,
+          price: ingredient.purchase_price
+        }));
+        setPurchasedIngredients(purchased);
+        disableInputs();
+      }
     }).catch((error) => {
       if (error.response) {
         console.log(error.response)
