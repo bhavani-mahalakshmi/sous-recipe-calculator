@@ -14,13 +14,18 @@ function Ingredient({ index, ingredient, onDelete, onChange }) {
   };
 
   return (
-    <div className="ingredient">
-      <input type="text" value={ingredient.name} placeholder="Ingredient Name" onChange={handleIngredientNameChange} />
-      <input type="number" value={ingredient.weight} placeholder="Weight" onChange={handleIngredientWeightChange} />
-      <button onClick={handleDelete}>Delete</button>
-    </div>
+    <tr className="ingredient">
+      <td>
+        <input type="text" value={ingredient.name} placeholder="Ingredient Name" onChange={handleIngredientNameChange} />
+      </td>
+      <td>
+        <input type="number" value={ingredient.weight} placeholder="Weight" onChange={handleIngredientWeightChange} />
+      </td>
+      <td>
+        <button onClick={handleDelete}>Delete</button>
+      </td>
+    </tr>
   );
 }
 
 export default Ingredient;
-

@@ -65,6 +65,7 @@ button:hover {
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 5px;
+  margin-top: auto;
 
 }
 
@@ -83,13 +84,18 @@ button:hover {
 
 .ingredients-container {
   background-color: #f2f2f2;
-  /* margin-right: 10px;
-  border: 2px solid #000; */
-  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .cost-container {
   background-color: #e6e6e6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 input[type="text"] {
@@ -114,7 +120,9 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  width: 100%;
+  margin: 0%;
+  padding: 0%;
 }
 
 .total-cost label {
@@ -133,7 +141,7 @@ table {
 }
 
 th, td {
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   text-align: left;
   padding: 8px;
 }
@@ -190,7 +198,15 @@ th {
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.add-ingredient {
-  display: block;
-  margin: 0 auto;
+.buttons-container {
+  margin-top: auto;
+}
+
+.cost-div {
+  margin-top:auto;
+}
+
+.total-cost-table td {
+  border: 0;
+  text-align: center;
 }

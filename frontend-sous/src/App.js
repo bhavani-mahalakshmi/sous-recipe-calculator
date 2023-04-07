@@ -88,18 +88,23 @@ function App() {
                     <tr>
                     <th>Name</th>
                     <th>Amount</th>
+                    <th></th>
                     </tr>
                 </thead>
+                <tbody>
+                    {ingredients.map((ingredient, index) => (
+                    <Ingredient key={index} index={index} ingredient={ingredient} onDelete={handleDeleteIngredient} onChange={handleIngredientChange} />
+                    ))}
+                </tbody>
             </table>
-            {ingredients.map((ingredient, index) => (
-            <Ingredient key={index} index={index} ingredient={ingredient} onDelete={handleDeleteIngredient} onChange={handleIngredientChange} />
-            ))}
-            {showAddButton && (
-            <button className="add-ingredient" onClick={handleAddIngredient}>Add Ingredient</button>
-            )}       
-            {showDoneButton && (
-            <button onClick={handleDone}>Done</button>
-            )}
+            <div className='buttons-container'>
+                {showAddButton && (
+                <button onClick={handleAddIngredient}>Add Ingredient</button>
+                )}       
+                {showDoneButton && (
+                <button onClick={handleDone}>Done</button>
+                )}
+            </div>
         </div>
         <div className="cost-container">
             <table>
@@ -136,11 +141,17 @@ function App() {
                 ))}
             </tbody>
             </table>
-            <div className="total-cost">
-            <label>Total Cost:</label>
-            <span>{totalCost}</span>
-            </div>
-            <button onClick={calculateTotalCost}>Calculate</button>
+                <div className="total-cost">
+                    <table className='total-cost-table'>
+                    <tbody>
+                    <td>
+                        <label>Total Cost:</label>
+                        <span>{totalCost}</span>
+                    </td>
+                    <td><button onClick={calculateTotalCost}>Calculate</button></td>
+                    </tbody>
+                    </table>
+                </div>
         </div>
         </div>
     </div>
