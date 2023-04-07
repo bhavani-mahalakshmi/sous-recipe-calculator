@@ -31,6 +31,11 @@ function App() {
   const handleDone = () => {
     // Add ingredients to purchasedIngredients state
     const newPurchasedIngredients = [...purchasedIngredients];
+    const count = ingredients.filter((ingredient) => ingredient.name === latestIngredient.name).length;
+    if (count > 1) {
+      alert('Ingredient already added. Please delete and re-add again if you want to change the weight.');
+      return;
+    }
     newPurchasedIngredients.push({ name: latestIngredient.name, amount: '', price: '' });
     setPurchasedIngredients(newPurchasedIngredients);
     setAddShowButton(true);
@@ -171,6 +176,10 @@ function App() {
   }
 
   const handleCalculate = () => {
+    if (recipeName === '') {
+      alert('Please enter a recipe name');
+      return;
+    }
     calculateTotalCost();
     // save();
   };
