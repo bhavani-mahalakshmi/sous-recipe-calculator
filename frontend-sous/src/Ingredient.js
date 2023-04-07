@@ -19,7 +19,7 @@ function Ingredient({ index, ingredient, onDelete, onChange }) {
         <input type="text" value={ingredient.name} placeholder="Ingredient Name" onChange={handleIngredientNameChange} />
       </td>
       <td className='weight'>
-        <input type="number" value={ingredient.weight} placeholder="Weight" onChange={handleIngredientWeightChange} />
+        <input type="number" min="0" step="0.01" value={ingredient.weight} placeholder="Weight" onChange={handleIngredientWeightChange} />
         <strong>oz</strong>
       </td>
       <td>
