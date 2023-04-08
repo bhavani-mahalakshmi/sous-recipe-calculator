@@ -183,6 +183,7 @@ function App() {
       })
       .catch(function (error) {
         console.log(error);
+        alert("There was an error saving the recipe. Please recheck the values and try again.")
       });
       setCalcCalled(false);
     }
