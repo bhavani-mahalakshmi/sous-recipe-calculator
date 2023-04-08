@@ -83,6 +83,7 @@ function App() {
     setPurchasedIngredients(newPurchasedIngredients);
     if(newIngredients.length === 0) {
       setTotalCost(0.0);
+      setEnableCalculateButton(false);
     }
     calculateTotalCost();
     setAddShowButton(true);
@@ -194,6 +195,10 @@ function App() {
       return;
     }
     calculateTotalCost(true);
+    if (ingredients.length === 0) {
+      alert('Please add ingredients');
+      return;
+    }
     setCalcCalled(true);
     save();
   };
