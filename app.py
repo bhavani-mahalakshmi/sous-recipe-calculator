@@ -1,16 +1,8 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, request
 
 from queries import get_recipe, insert_recipe
 
 app = Flask(__name__)
-
-@app.route('/')
-def index():
-    # response_body = {
-    #     "message": "Get the damn job!!"
-    # }
-    # return response_body
-    return render_template('index.html')
 
 @app.route('/recipe', methods=['GET', 'POST'])
 def recipe():
