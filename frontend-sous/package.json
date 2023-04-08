@@ -2,7 +2,7 @@
   "name": "frontend-sous",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://127.0.0.1:5000",
+  "proxy": "http://127.0.0.1:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -20,7 +20,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start-backend": "cd ../../backend-sous && python3 app.py"
+    "start-backend": "python3 ../backend-sous/app.py",
+    "start-both": "npm run start-backend & npm start && fg"
   },
   "eslintConfig": {
     "extends": [
