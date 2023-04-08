@@ -143,6 +143,9 @@ function App() {
   };
 
   const calculateTotalCost = () => {
+    if((ingredients.length !== purchasedIngredients.length) || (purchasedIngredients.some(({amount, price}) => !amount || !price))) {
+      return;
+    }
     let totalCost = 0;
     purchasedIngredients.forEach((ingredient, index) => {
       const costPerUnit = ingredient.price / ingredient.amount;
