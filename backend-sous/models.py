@@ -1,9 +1,12 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from db_init import session, engine
 
+# Create the declarative base
 Base = declarative_base()
 
+# Define the tables
 class Recipe(Base):
     __tablename__ = 'recipes'
     id = Column(Integer, primary_key=True)
@@ -26,3 +29,9 @@ class RecipeIngredient(Base):
     weight = Column(Float, nullable=False)
     recipe = relationship('Recipe', back_populates='recipe_ingredients')
     ingredient = relationship('Ingredient', back_populates='recipe_ingredients')
+
+# Create the tables
+Base.metadata.create_all(engine)
+
+# Close the session
+session.close()

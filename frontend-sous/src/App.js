@@ -81,14 +81,14 @@ function App() {
     const newPurchasedIngredients = [...purchasedIngredients];
     newPurchasedIngredients.splice(index, 1);
     setPurchasedIngredients(newPurchasedIngredients);
-    if(newIngredients.length === 0) {
-      setTotalCost(0.0);
-      setEnableCalculateButton(false);
-    }
     calculateTotalCost();
     setAddShowButton(true);
     setDoneShowButton(false);
     setEnableCalculateButton(true);
+    if(newIngredients.length === 0) {
+      setTotalCost(0.0);
+      setEnableCalculateButton(false);
+    }
   };
 
   const toggleDoneButton = (ingredient) => {
