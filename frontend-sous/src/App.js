@@ -31,6 +31,7 @@ function App() {
   const handleAddIngredient = () => {
     setIngredients([...ingredients, { name: '', weight: ''}]);
     setAddShowButton(false);
+    setEnableCalculateButton(false);
   };
 
   const disableInputs = () => {
@@ -88,11 +89,18 @@ function App() {
   const handleDeleteIngredient = (index) => {
     const newIngredients = [...ingredients];
     newIngredients.splice(index, 1);
-    setIngredients(newIngredients);
   
-    const newPurchasedIngredients = [...purchasedIngredients];
-    newPurchasedIngredients.splice(index, 1);
-    setPurchasedIngredients(newPurchasedIngredients);
+    const filteredIngs = newIngredients.filter((item) => item.name !== '' && item.weight !== '');
+    setIngredients(filteredIngs);
+  
+    const newListPurchasedIngredients = [...purchasedIngredients];
+    newListPurchasedIngredients.splice(index, 1);
+  
+    if (!newListPurchasedIngredients.some((item) => item.name === latestIngredient.name)) {
+      handleDone();
+    }
+  
+    setPurchasedIngredients(newListPurchasedIngredients);
   
     setAddShowButton(true);
     setDoneShowButton(false);
@@ -105,7 +113,7 @@ function App() {
   
     setIngredientsUpdated(true);
   };
-  
+    
   useEffect(() => {
     if (ingredientsUpdated) {
       calculateTotalCost();
@@ -183,6 +191,9 @@ function App() {
   };
 
   const save = () => {
+    if((ingredients.length !== purchasedIngredients.length) || (purchasedIngredients.some(({amount, price}) => !amount || !price))) {
+      return;
+    }
     if (calcCalled) {
       let ingredientsMap = []
       ingredients.map((ingredient, index) => {
