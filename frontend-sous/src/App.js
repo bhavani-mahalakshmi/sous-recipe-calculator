@@ -13,6 +13,7 @@ function App() {
   const [latestIngredient, setLatestIngredient] = useState({ name: '', weight: ''});
   const [calcCalled, setCalcCalled] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [ingredientsUpdated, setIngredientsUpdated] = useState(false);
 
   const handleRecipeNameChange = (e) => {
     setRecipeName(e.target.value);
@@ -88,18 +89,29 @@ function App() {
     const newIngredients = [...ingredients];
     newIngredients.splice(index, 1);
     setIngredients(newIngredients);
+  
     const newPurchasedIngredients = [...purchasedIngredients];
     newPurchasedIngredients.splice(index, 1);
     setPurchasedIngredients(newPurchasedIngredients);
-    calculateTotalCost();
+  
     setAddShowButton(true);
     setDoneShowButton(false);
     setEnableCalculateButton(true);
-    if(newIngredients.length === 0) {
+  
+    if (newIngredients.length === 0) {
       setTotalCost(0.0);
       setEnableCalculateButton(false);
     }
+  
+    setIngredientsUpdated(true);
   };
+  
+  useEffect(() => {
+    if (ingredientsUpdated) {
+      calculateTotalCost();
+      setIngredientsUpdated(false);
+    }
+  }, [ingredientsUpdated]);
 
   const toggleDoneButton = (ingredient) => {
         // enable Done button on all filled inputs
@@ -149,7 +161,6 @@ function App() {
     ingredient[key] = event.target.value;
     setPurchasedIngredients(newPurchasedIngredients);
     toggleCalculateButton();
-    // calculateTotalCost();
   };
 
   const calculateTotalCost = () => {
@@ -159,6 +170,9 @@ function App() {
     let totalCost = 0;
     purchasedIngredients.forEach((ingredient, index) => {
       const costPerUnit = ingredient.price / ingredient.amount;
+      if(isNaN(costPerUnit)) {
+        costPerUnit = 0;
+      }
       totalCost += costPerUnit * ingredients[index].weight;
     });
     if(!isNaN(parseFloat(totalCost)) && isFinite(totalCost) && totalCost >= 0){
@@ -277,6 +291,7 @@ function App() {
                         step="0.01"
                         defaultValue={ingredient.price}
                         placeholder="Purchase Price"
+                        onBlur={calculateTotalCost}
                         onChange={(event) => handlePurchaseChange(index, "price", event)}
                         />
                     </td>
@@ -289,6 +304,7 @@ function App() {
                         defaultValue={ingredient.amount}
                         placeholder="Purchase Amount"
                         onChange={(event) => handlePurchaseChange(index, "amount", event)}
+                        onBlur={calculateTotalCost}
                         />
                         <strong>oz</strong>
                     </td>
