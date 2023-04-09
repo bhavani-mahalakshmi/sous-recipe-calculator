@@ -28,7 +28,22 @@ function App() {
     setEnableCalculateButton(true);
   };
 
+  const disableDelete = () => {
+    const deleteButtons = document.querySelectorAll('.delete');
+    for (let i = 0; i < deleteButtons.length; i++) {
+      deleteButtons[i].setAttribute('disabled', true);
+    }
+  };
+
+  const enableDelete = () => {
+    const deleteButtons = document.querySelectorAll('.delete');
+    for (let i = 0; i < deleteButtons.length; i++) {
+      deleteButtons[i].removeAttribute('disabled');
+    }
+  };
+
   const handleAddIngredient = () => {
+    disableDelete();
     setIngredients([...ingredients, { name: '', weight: ''}]);
     setAddShowButton(false);
     setEnableCalculateButton(false);
@@ -54,6 +69,7 @@ function App() {
     setAddShowButton(true);
     setDoneShowButton(false);
     setEnableCalculateButton(false);
+    enableDelete();
     disableInputs();
   };
 
@@ -112,8 +128,9 @@ function App() {
     }
   
     setIngredientsUpdated(true);
+    enableDelete();
   };
-    
+      
   useEffect(() => {
     if (ingredientsUpdated) {
       calculateTotalCost();
@@ -226,7 +243,7 @@ function App() {
   useEffect(() => {
     // Run the save function whenever totalCost changes
     save();
-  }, [totalCost]);
+  }, [calcCalled]);
 
   const handleCalculate = () => {
     if (recipeName === '') {
@@ -239,7 +256,7 @@ function App() {
       return;
     }
     setCalcCalled(true);
-    save();
+    // save();
   };
 
   return (

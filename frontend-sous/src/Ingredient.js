@@ -23,7 +23,7 @@ function Ingredient({ index, ingredient, onDelete, onChange }) {
         <strong>oz</strong>
       </td>
       <td>
-        <button onClick={handleDelete}>Delete</button>
+        <button onClick={handleDelete} className='delete'>Delete</button>
       </td>
     </tr>
   );
