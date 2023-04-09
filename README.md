@@ -26,3 +26,6 @@ The total cost will be updated dynamically for the following use cases:
 
 It can be accessed here: http://52.90.194.169:3000
 
+Assuming that there is postgres, flask and npm installed, the application can be run by the following commands:
+1. `cd sous-recipe-calculator/frontend-sous`
+2. `npm run start-both` or `yarn start-both`
