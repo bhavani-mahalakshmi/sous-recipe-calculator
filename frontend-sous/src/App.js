@@ -89,11 +89,19 @@ function App() {
   const handleDeleteIngredient = (index) => {
     const newIngredients = [...ingredients];
     newIngredients.splice(index, 1);
+  
     const filteredIngs = newIngredients.filter((item) => item.name !== '' && item.weight !== '');
     setIngredients(filteredIngs);
-    const newPurchasedIngredients = [...purchasedIngredients];
-    newPurchasedIngredients.splice(index, 1);
-    setPurchasedIngredients(newPurchasedIngredients);
+  
+    const newListPurchasedIngredients = [...purchasedIngredients];
+    newListPurchasedIngredients.splice(index, 1);
+  
+    if (!newListPurchasedIngredients.some((item) => item.name === latestIngredient.name)) {
+      handleDone();
+    }
+  
+    setPurchasedIngredients(newListPurchasedIngredients);
+  
     setAddShowButton(true);
     setDoneShowButton(false);
     setEnableCalculateButton(true);
@@ -105,7 +113,7 @@ function App() {
   
     setIngredientsUpdated(true);
   };
-  
+    
   useEffect(() => {
     if (ingredientsUpdated) {
       calculateTotalCost();
