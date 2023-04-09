@@ -12,9 +12,19 @@ function App() {
   const [totalCost, setTotalCost] = useState(0.0);
   const [latestIngredient, setLatestIngredient] = useState({ name: '', weight: ''});
   const [calcCalled, setCalcCalled] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const handleRecipeNameChange = (e) => {
     setRecipeName(e.target.value);
+  };
+
+  const handleEditRecipeName = () => {
+    setEditMode(true);
+  };
+
+  const handleDoneEditRecipeName = () => {
+    setEditMode(false);
+    setEnableCalculateButton(true);
   };
 
   const handleAddIngredient = () => {
@@ -211,7 +221,14 @@ function App() {
     <div>
         <div className='recipe-name-container'>
             <label htmlFor="recipe-name">Recipe Name:</label>
-            <input type="text" id="recipe-name" value={recipeName} onChange={handleRecipeNameChange} />
+            <input type="text" id="recipe-name" value={recipeName} onChange={handleRecipeNameChange} disabled={!editMode}/>
+            {editMode && (
+                <button onClick={handleDoneEditRecipeName}>Done</button>
+            )}
+            {!editMode && (
+                <button onClick={handleEditRecipeName}>Edit</button>
+            )}
+            
         </div>
         <div className="recipe-container">
         <div className="ingredients-container">

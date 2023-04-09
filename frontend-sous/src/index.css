@@ -243,7 +243,7 @@ th {
 
 .recipe-name-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
@@ -252,11 +252,13 @@ th {
 .recipe-name-container label {
   font-weight: bold;
   font-size: 24px;
+  margin-right: 10px;
 }
 
 .recipe-name-container input {
   padding: 10px;
   margin-top: 10px;
+  margin-right: 10px;
   font-size: 20px;
   border-radius: 5px;
   border: 2px solid #ccc;
