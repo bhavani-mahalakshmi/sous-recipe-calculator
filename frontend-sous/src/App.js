@@ -50,7 +50,7 @@ function App() {
       const res =response.data.data
       if(res) {
         let recipe = res.recipe
-        setTotalCost(recipe.cost)
+        setTotalCost(recipe.cost.toFixed(3))
         setRecipeName(recipe.name)
         const ingredients = recipe.ingredients.map((ingredient) => ({
           name: ingredient.name,
@@ -284,8 +284,8 @@ function App() {
                     <tbody>
                     <tr>
                       <td>
-                          <label>Total Cost:</label>
-                          <span>{totalCost}</span>
+                          <label>Recipe Cost:</label>
+                          <span className="dollar cost">$</span> <span className="cost">{totalCost}</span>
                       </td>
                       <td>
                         <button onClick={handleCalculate} disabled={!enableCalculateButton}>Calculate</button>

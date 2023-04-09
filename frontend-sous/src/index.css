@@ -131,7 +131,7 @@ button {
   font-weight: bold;
 }
 
-.total-cost span {
+.total-cost span.cost{
   font-weight: bold;
   color: #4CAF50;
 }
