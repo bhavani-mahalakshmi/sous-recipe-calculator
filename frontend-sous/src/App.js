@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from 'react';
 import Ingredient from './Ingredient';
-import PurchaseInput from './PurchaseInput';
 
 function App() {
   const [recipeName, setRecipeName] = useState('');
@@ -14,6 +13,7 @@ function App() {
   const [latestIngredient, setLatestIngredient] = useState({ name: '', weight: ''});
   const [calcCalled, setCalcCalled] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [ingredientsUpdated, setIngredientsUpdated] = useState(false);
 
   const handleRecipeNameChange = (e) => {
     setRecipeName(e.target.value);
@@ -89,18 +89,29 @@ function App() {
     const newIngredients = [...ingredients];
     newIngredients.splice(index, 1);
     setIngredients(newIngredients);
+  
     const newPurchasedIngredients = [...purchasedIngredients];
     newPurchasedIngredients.splice(index, 1);
     setPurchasedIngredients(newPurchasedIngredients);
-    calculateTotalCost();
+  
     setAddShowButton(true);
     setDoneShowButton(false);
     setEnableCalculateButton(true);
-    if(newIngredients.length === 0) {
+  
+    if (newIngredients.length === 0) {
       setTotalCost(0.0);
       setEnableCalculateButton(false);
     }
+  
+    setIngredientsUpdated(true);
   };
+  
+  useEffect(() => {
+    if (ingredientsUpdated) {
+      calculateTotalCost();
+      setIngredientsUpdated(false);
+    }
+  }, [ingredientsUpdated]);
 
   const toggleDoneButton = (ingredient) => {
         // enable Done button on all filled inputs
