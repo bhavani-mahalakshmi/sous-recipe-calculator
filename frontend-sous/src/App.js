@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from 'react';
 import Ingredient from './Ingredient';
+import PurchaseInput from './PurchaseInput';
 
 function App() {
   const [recipeName, setRecipeName] = useState('');
@@ -149,7 +150,6 @@ function App() {
     ingredient[key] = event.target.value;
     setPurchasedIngredients(newPurchasedIngredients);
     toggleCalculateButton();
-    // calculateTotalCost();
   };
 
   const calculateTotalCost = () => {
@@ -159,6 +159,9 @@ function App() {
     let totalCost = 0;
     purchasedIngredients.forEach((ingredient, index) => {
       const costPerUnit = ingredient.price / ingredient.amount;
+      if(isNaN(costPerUnit)) {
+        costPerUnit = 0;
+      }
       totalCost += costPerUnit * ingredients[index].weight;
     });
     if(!isNaN(parseFloat(totalCost)) && isFinite(totalCost) && totalCost >= 0){
@@ -277,6 +280,7 @@ function App() {
                         step="0.01"
                         defaultValue={ingredient.price}
                         placeholder="Purchase Price"
+                        onBlur={calculateTotalCost}
                         onChange={(event) => handlePurchaseChange(index, "price", event)}
                         />
                     </td>
@@ -289,6 +293,7 @@ function App() {
                         defaultValue={ingredient.amount}
                         placeholder="Purchase Amount"
                         onChange={(event) => handlePurchaseChange(index, "amount", event)}
+                        onBlur={calculateTotalCost}
                         />
                         <strong>oz</strong>
                     </td>
