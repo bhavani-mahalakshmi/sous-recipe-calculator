@@ -302,7 +302,7 @@ function App() {
                     <tr>
                       <td>
                           <label>Recipe Cost:</label>
-                          <span className="dollar cost">$</span> <span className="cost">{totalCost}</span>
+                          <span className="cost">${totalCost}</span>
                       </td>
                       <td>
                         <button onClick={handleCalculate} disabled={!enableCalculateButton}>Calculate</button>
