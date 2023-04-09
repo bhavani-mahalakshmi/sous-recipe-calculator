@@ -22,7 +22,7 @@ The total cost will be updated dynamically for the following use cases:
 1. When an ingredient is deleted.
 2. When the purchase price or purchase amount for an ingredient is changed.
 
-
+The flask application takes care of creating the tables if postgres is properly configured with the username, password and database name
 
 It can be accessed here: http://52.90.194.169:3000
 
