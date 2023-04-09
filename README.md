@@ -19,6 +19,7 @@ It's possible to include the cost columns in the Ingredients table. However, if 
 The application is deployed and run on an ec2 instance. It is made accessible via the internet.
 
 Expected Behavior:
+
 The weight, purchase amount and purchase price columns will either not allowing alphabets(except e as e is used to represent exponential numbers) to be entered or net let the users submit the recipe. Incase, users are able to enter alphabets in one of these columns, the Done button does not show up on the Ingredients side and the calculate button does not get enabled on the Cost side
 
 The page does not let users save the recipe without the users giving it a name
@@ -28,6 +29,7 @@ The page does not let users enter the same ingredient name twice
 The total cost will be updated dynamically for the following use cases:
 1. When an ingredient is deleted.
 2. When the purchase price or purchase amount for an ingredient is changed.
+
 
 The flask application takes care of creating the tables if postgres is properly configured with the username, password and database name
 
