@@ -342,3 +342,11 @@ button:disabled {
     padding: 6px;
   }
 }
+
+.ingredient input[type="text"] {
+  margin-right: 10px; /* add 10px margin to the right of the input text */
+}
+
+.ingredient .weight {
+  margin-left: 10px; /* add 10px margin to the left of the weight input and oz label */
+}
