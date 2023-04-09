@@ -21,7 +21,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start-backend": "python3 ../backend-sous/app.py",
-    "start-both": "npm run start-backend & npm start && fg"
+    "start-both": "eval $(cat ../backend-sous/.env | sed 's/^/export /') && npm run start-backend & npm start && fg"
   },
   "eslintConfig": {
     "extends": [
