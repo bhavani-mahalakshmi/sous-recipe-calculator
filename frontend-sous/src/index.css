@@ -21,14 +21,12 @@ code {
 }
 
 .ingredients-container {
-  background-color: #f0f0f0;
   flex: 1;
   padding: 10px;
   height: 100%;
 }
 
 .cost-container {
-  background-color: #dcdcdc;
   flex: 1;
   padding: 10px;
   height: 100%;
@@ -60,7 +58,6 @@ button:hover {
 
 .total-cost {
   margin: 20px;
-  background-color: #f5f5f5;
   border-radius: 5px;
   font-weight: bold;
   padding: 10px 20px;
@@ -83,7 +80,6 @@ button:hover {
 }
 
 .ingredients-container {
-  background-color: #f2f2f2;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -91,7 +87,6 @@ button:hover {
 }
 
 .cost-container {
-  background-color: #e6e6e6;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -142,19 +137,13 @@ table {
 }
 
 th {
-  /* border: 1px solid #ddd; */
   text-align: center;
   padding: 8px;
 }
 
 td {
-  /* border: 1px solid #ddd; */
   text-align: left;
   padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
 }
 
 th {
