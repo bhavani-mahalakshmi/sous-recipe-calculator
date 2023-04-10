@@ -10,6 +10,8 @@ The application is deployed and run on an ec2 instance. It is made accessible vi
 
 A demo of the project is available here: http://52.90.194.169:3000
 
+The application is built and tested to be responsive and usable on displays of different dimensions. 
+
 The table structures look like:
 
 <img width="1112" alt="image" src="https://user-images.githubusercontent.com/54939056/230743347-8e96b5fd-05bb-4c76-bc06-ded244df5474.png">
